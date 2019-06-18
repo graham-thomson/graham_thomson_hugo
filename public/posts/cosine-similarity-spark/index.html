@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+<head>
+    <base href="/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="author" content="">
+
+<meta name="description" content="">
+
+<title>Cosine Similarity Spark</title>
+<meta name="generator" content="Hugo 0.55.6" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/pojoaque.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700" rel="stylesheet" type="text/css">
+<link  href="http://grahamflemingthomson.com//css/theme.min.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+<div class="page-container container-fluid">
+<div class="col-md-3 menu">
+    <nav class="col-md-3">
+    
+    <h3 class="home-link"><a href="http://grahamflemingthomson.com/">Root</a></h3>
+    <div id="last-posts" class="open">
+        <h3 data-open="last-posts">Graham Thomson - Most recent posts</h3>
+        <ul>
+            
+            <li><a href="http://grahamflemingthomson.com/posts/spark-s3a/">Spark &#43; s3a:// = ❤️</a></li>
+            
+            <li><a href="http://grahamflemingthomson.com/posts/cosine-similarity-spark/">Cosine Similarity Spark</a></li>
+            
+            <li><a href="http://grahamflemingthomson.com/posts/resume/">Resume</a></li>
+            
+        </ul>
+    </div>
+    
+
+    
+    <div id="tags" class="open">
+        <h3 data-open="tags">Tags</h3>
+        <ul class="tags">
+            
+            <li><a href="/tags/apache">apache</a></li>
+            
+            <li><a href="/tags/blog">blog</a></li>
+            
+            <li><a href="/tags/data-science">data-science</a></li>
+            
+            <li><a href="/tags/python">python</a></li>
+            
+            <li><a href="/tags/resume">resume</a></li>
+            
+            <li><a href="/tags/spark">spark</a></li>
+            
+        </ul>
+    </div>
+    
+
+    
+</nav>
+
+</div>
+<div class="col-md-9 content">
+
+<h1>Cosine Similarity Spark</h1>
+<h4>Published 06-18-2019 08:57:30</h4>
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-via="kendo5731"></a>
+<script>!function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
+    if (!d.getElementById(id)) {
+        js = d.createElement(s);
+        js.id = id;
+        js.src = p + '://platform.twitter.com/widgets.js';
+        fjs.parentNode.insertBefore(js, fjs);
+    }
+}(document, 'script', 'twitter-wjs');</script>
+
+<div class="fb-share-button" data-href="http://grahamflemingthomson.com/posts/cosine-similarity-spark/" data-layout="button"></div>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en-US/sdk.js#xfbml=1&version=v2.5";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<article>
+    
+
+<h2 id="cosine-similarity-between-a-static-vector-and-each-vector-in-a-spark-data-frame">Cosine similarity between a static vector and each vector in a Spark data frame</h2>
+
+<p>Ever want to calculate the cosine similarity between a static vector in Spark and each vector in a Spark data frame? Probably not, as this is an absurdly niche problem to solve but, if you ever have, here&rsquo;s how to do it using <code>spark.sql</code> and a UDF.</p>
+
+<pre><code class="language-python"># imports we'll need
+import numpy as np
+from pyspark.ml.linalg import *
+from pyspark.sql.types import * 
+from pyspark.sql.functions import *
+
+# function to generate a random Spark dense vector, spark doesnt like np floats ;)
+def random_dense_vector(length=10):
+    return Vectors.dense([float(np.random.random()) for i in xrange(length)])
+
+# create a random static dense vector
+static_vector = random_dense_vector()
+
+# create a random DF with dense vectors in column
+df = spark.createDataFrame([[random_dense_vector()] for x in xrange(10)], [&quot;myCol&quot;])
+df.limit(3).toPandas()
+
+# write our UDF for cosine similarity
+def cos_sim(a,b):
+    return float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
+
+# apply the UDF to the column
+df = df.withColumn(&quot;coSim&quot;, udf(cos_sim, FloatType())(col(&quot;myCol&quot;), array([lit(v) for v in static_array])))
+df.limit(10).toPandas()
+</code></pre>
+
+<p>So, what did we do:</p>
+
+<ul>
+<li>Imported necessary libraries.</li>
+<li>Instantiated a random static vector and a DataFrame that holds a bunch of random vectors.</li>
+<li>Wrote a UDF to calculate cosine similarity.</li>
+<li>Mapped the UDF over the DF to create a new column containing the cosine similarity between the static vector and the vector in that row.</li>
+</ul>
+
+<p>This is trivial to do using RDDs and a .map() but in spark.sql you need to:</p>
+
+<ul>
+<li>Register the cosine similarity function as a UDF and specify the return type.
+
+<ul>
+<li><code>udf(cos_sim, FloatType())</code></li>
+</ul></li>
+<li>Pass the UDF the two arguments it needs: a column to map over AND the static vector we defined. However, we need to tell Spark that the static vector is an array of literal floats first using:
+
+<ul>
+<li><code>(col(&quot;myCol&quot;), array([lit(v) for v in static_array]))</code></li>
+</ul></li>
+</ul>
+
+<p><code>sys.exit(&quot;All done!&quot;)</code></p>
+
+</article>
+
+
+
+</div>
+</div>
+<script src="http://grahamflemingthomson.com//js/theme.min.js" type="text/javascript"></script>
+
+
+</body>
+</html>
+

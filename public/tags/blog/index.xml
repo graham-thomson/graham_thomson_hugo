@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>blog on Graham Thomson</title>
+    <link>http://grahamflemingthomson.com/tags/blog/</link>
+    <description>Recent content in blog on Graham Thomson</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 18 Jun 2019 09:31:24 -0400</lastBuildDate>
+    
+	<atom:link href="http://grahamflemingthomson.com/tags/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Spark &#43; s3a:// = ❤️</title>
+      <link>http://grahamflemingthomson.com/posts/spark-s3a/</link>
+      <pubDate>Tue, 18 Jun 2019 09:31:24 -0400</pubDate>
+      
+      <guid>http://grahamflemingthomson.com/posts/spark-s3a/</guid>
+      <description>Typically our data science AWS workflows follow this sequence:
+ Turn on EC2. Copy data from S3 via awscli to local machine file system. Code references local data via /path/to/data/. ??? Profit.  However, if the data you need to reference is relatively small or you&amp;rsquo;re only passing over the data once, you can use s3a:// and stream the data direct from S3 into your code.
+Say we have this script as visits_by_day.</description>
+    </item>
+    
+    <item>
+      <title>Cosine Similarity Spark</title>
+      <link>http://grahamflemingthomson.com/posts/cosine-similarity-spark/</link>
+      <pubDate>Tue, 18 Jun 2019 08:57:30 -0400</pubDate>
+      
+      <guid>http://grahamflemingthomson.com/posts/cosine-similarity-spark/</guid>
+      <description>Cosine similarity between a static vector and each vector in a Spark data frame Ever want to calculate the cosine similarity between a static vector in Spark and each vector in a Spark data frame? Probably not, as this is an absurdly niche problem to solve but, if you ever have, here&amp;rsquo;s how to do it using spark.sql and a UDF.
+# imports we&#39;ll need import numpy as np from pyspark.</description>
+    </item>
+    
+  </channel>
+</rss>

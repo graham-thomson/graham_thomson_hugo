@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+<head>
+    <base href="/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="author" content="">
+
+<meta name="description" content="">
+
+<title>Spark &#43; s3a:// = ❤️</title>
+<meta name="generator" content="Hugo 0.55.6" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/pojoaque.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700" rel="stylesheet" type="text/css">
+<link  href="http://grahamflemingthomson.com//css/theme.min.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+<div class="page-container container-fluid">
+<div class="col-md-3 menu">
+    <nav class="col-md-3">
+    
+    <h3 class="home-link"><a href="http://grahamflemingthomson.com/">Root</a></h3>
+    <div id="last-posts" class="open">
+        <h3 data-open="last-posts">Graham Thomson - Most recent posts</h3>
+        <ul>
+            
+            <li><a href="http://grahamflemingthomson.com/posts/spark-s3a/">Spark &#43; s3a:// = ❤️</a></li>
+            
+            <li><a href="http://grahamflemingthomson.com/posts/cosine-similarity-spark/">Cosine Similarity Spark</a></li>
+            
+            <li><a href="http://grahamflemingthomson.com/posts/resume/">Resume</a></li>
+            
+        </ul>
+    </div>
+    
+
+    
+    <div id="tags" class="open">
+        <h3 data-open="tags">Tags</h3>
+        <ul class="tags">
+            
+            <li><a href="/tags/apache">apache</a></li>
+            
+            <li><a href="/tags/blog">blog</a></li>
+            
+            <li><a href="/tags/data-science">data-science</a></li>
+            
+            <li><a href="/tags/python">python</a></li>
+            
+            <li><a href="/tags/resume">resume</a></li>
+            
+            <li><a href="/tags/spark">spark</a></li>
+            
+        </ul>
+    </div>
+    
+
+    
+</nav>
+
+</div>
+<div class="col-md-9 content">
+
+<h1>Spark &#43; s3a:// = ❤️</h1>
+<h4>Published 06-18-2019 09:31:24</h4>
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-via="kendo5731"></a>
+<script>!function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
+    if (!d.getElementById(id)) {
+        js = d.createElement(s);
+        js.id = id;
+        js.src = p + '://platform.twitter.com/widgets.js';
+        fjs.parentNode.insertBefore(js, fjs);
+    }
+}(document, 'script', 'twitter-wjs');</script>
+
+<div class="fb-share-button" data-href="http://grahamflemingthomson.com/posts/spark-s3a/" data-layout="button"></div>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en-US/sdk.js#xfbml=1&version=v2.5";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<article>
+    <p>Typically our data science AWS workflows follow this sequence:</p>
+
+<ol>
+<li>Turn on EC2.</li>
+<li>Copy data from S3 via <code>awscli</code> to local machine file system.</li>
+<li>Code references local data via <code>/path/to/data/</code>.</li>
+<li>???</li>
+<li>Profit.</li>
+</ol>
+
+<p>However, if the data you need to reference is relatively small or you&rsquo;re only passing over the data once, you can use <a href="https://wiki.apache.org/hadoop/AmazonS3">s3a://</a> and stream the data direct from S3 into your code.</p>
+
+<p>Say we have this script as <code>visits_by_day.py</code></p>
+
+<pre><code class="language-python"># generally a good idea to alias spark functions to preserve python built in's namespace (e.g. sum)
+import pyspark.sql.functions as F
+from pyspark.sql import SparkSession
+
+if __name__ == '__main__':
+    spark = SparkSession.builder.getOrCreate()
+    df = spark.read.parquet(&quot;s3a://some-s3-bucket/clients/client-x/data/omniture/dt=2017-04-*&quot;)
+    df.groupBy(&quot;visit_day&quot;).agg(F.count(&quot;*&quot;).alias(&quot;no_obs&quot;)).orderBy(&quot;visit_day&quot;).show()
+</code></pre>
+
+<p>Or in Scala <code>VisitsByDay.scala</code>:</p>
+
+<pre><code class="language-javascript">import org.apache.spark.sql.SparkSession
+
+/**
+  * Created by grathoms on 6/14/17.
+  */
+object VisitsByDay {
+  def main(args: Array[String]): Unit = {
+    val spark = SparkSession.builder().getOrCreate()
+    val df = spark.read.parquet(&quot;s3a://some-s3-bucket/clients/client-x/data/omniture/dt=2017-04-1*&quot;)
+    df.groupBy(&quot;visit_day&quot;).count().orderBy(&quot;visit_day&quot;).show()
+  }
+}
+</code></pre>
+
+<p>Output:</p>
+
+<pre><code>+---------+------+
+|visit_day| count|
++---------+------+
+| 20170410|208823|
+| 20170411|335355|
+| 20170412|238535|
+| 20170413|102363|
+| 20170414|618847|
+| 20170415|561687|
+| 20170416|146944|
+| 20170417|698453|
+| 20170418|142700|
+| 20170419|343261|
++---------+------+
+</code></pre>
+
+<p>If you&rsquo;ve installed Spark from scratch you&rsquo;ll need additional JARs to use s3a that are not inlcuded with Spark at the time of authoring this post.</p>
+
+<pre><code class="language-bash"># the jars you'll need to do this...
+wget https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/2.7.3/hadoop-aws-2.7.3.jar -O $SPARK_HOME/jars/hadoop-aws-2.7.3.jar
+wget http://central.maven.org/maven2/com/amazonaws/aws-java-sdk/1.7.4/aws-java-sdk-1.7.4.jar -O $SPARK_HOME/jars/aws-java-sdk-1.7.4.jar
+</code></pre>
+
+</article>
+
+
+
+</div>
+</div>
+<script src="http://grahamflemingthomson.com//js/theme.min.js" type="text/javascript"></script>
+
+
+</body>
+</html>
+
