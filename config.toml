@@ -1,4 +1,4 @@
-baseURL = "http://grahamflemingthomson.com/"
+baseURL = "http://grahamflemingthomson.com"
 languageCode = "en-us"
 title = "Graham Thomson"
 theme = "code-editor"
