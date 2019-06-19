@@ -28,6 +28,8 @@
         <h3 data-open="last-posts">Graham Thomson - Most recent posts</h3>
         <ul>
             
+            <li><a href="http://grahamflemingthomson.com/posts/list-of-lists/">List of Lists</a></li>
+            
             <li><a href="http://grahamflemingthomson.com/posts/spark-s3a/">Spark &#43; s3a:// = ❤️</a></li>
             
             <li><a href="http://grahamflemingthomson.com/posts/cosine-similarity-spark/">Cosine Similarity Spark</a></li>
@@ -87,6 +89,12 @@ EXPERIENCE Publicis Groupe, Boston — Lead Data Scientist February 2019 - PRESE
         Typically our data science AWS workflows follow this sequence:
  Turn on EC2. Copy data from S3 via awscli to local machine file system. Code references local data via /path/to/data/. ??? Profit.  However, if the data you need to reference is relatively small or you&rsquo;re only passing over the data once, you can use s3a:// and stream the data direct from S3 into your code.
 Say we have this script as visits_by_day.
+    </article>
+    
+    <article>
+        <h3><a href="http://grahamflemingthomson.com/posts/list-of-lists/">List of Lists</a> - 2019-06-18 21:17:24</h3>
+        There are a seemingly infinite number of ways to flatten a list of lists in base Python. By flattening, I mean reducing the dimension of a list of lists. In numpy it would be something like:
+import numpy as np np.arange(1, 13).reshape(4,3) # array([[ 1, 2, 3], # [ 4, 5, 6], # [ 7, 8, 9], # [10, 11, 12]]) # becomes np.arange(1, 13).reshape(4,3).reshape(-1) # array([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])  But what is the fastest and cleanest way in base Python?
     </article>
     
 </div>

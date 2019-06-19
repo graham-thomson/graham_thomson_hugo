@@ -5,6 +5,12 @@ draft: false
 tags: ["resume"]
 ---
 
+### ABOUT
+
+----
+
+Currently a data scientist at Publicis Spine which serves as a strategic partner in achieving data, analytics, and technology growth solutions to Publicis Groupe agencies and their clients.
+
 ### SKILLS
 
 ----
