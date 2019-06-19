@@ -38,10 +38,10 @@ Say we have this script as visits_by_day.</description>
       <pubDate>Mon, 17 Jun 2019 21:13:38 -0400</pubDate>
       
       <guid>http://grahamflemingthomson.com/posts/resume/</guid>
-      <description>SKILLS Python, SQL, Spark, Keras, Scala, Hadoop/Hive, PHP, APIs, git, HTML5, AWS, GCP, Windows/OSX/Linux TCP/IP, HTTP/S, SSL, SSH, FTP, Microsoft Excel/Office
+      <description>ABOUT Currently a data scientist at Publicis Spine which serves as a strategic partner in achieving data, analytics, and technology growth solutions to Publicis Groupe agencies and their clients.
+SKILLS Python, SQL, Spark, Keras, Scala, Hadoop/Hive, PHP, APIs, git, HTML5, AWS, GCP, Windows/OSX/Linux TCP/IP, HTTP/S, SSL, SSH, FTP, Microsoft Excel/Office
 EXPERIENCE Publicis Groupe, Boston — Lead Data Scientist February 2019 - PRESENT
- Machine learning and data science development for Publicis Spine.  Digitas, Boston — Lead Data Scientist July 2017 - January 2019
- Client facing data scientist, leading various data science projects for multiple clients, including: high value behavior analysis, multi-touch attribution, media mix modeling, and propensity modeling based on user behavior.</description>
+ Machine learning and data science development for Publicis Spine.</description>
     </item>
     
   </channel>
