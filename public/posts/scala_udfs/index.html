@@ -1,0 +1,256 @@
+<!doctype html>
+<html>
+<head>
+    <base href="/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="author" content="">
+
+<meta name="description" content="">
+
+<title>Using Scala UDFs in PySpark</title>
+<meta name="generator" content="Hugo 0.55.6" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/pojoaque.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700" rel="stylesheet" type="text/css">
+<link  href="http://grahamflemingthomson.com/css/theme.min.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+<div class="page-container container-fluid">
+<div class="col-md-3 menu">
+    <nav class="col-md-3">
+    
+    <h3 class="home-link"><a href="http://grahamflemingthomson.com">Root</a></h3>
+    <div id="last-posts" class="open">
+        <h3 data-open="last-posts">Graham Thomson - Most recent posts</h3>
+        <ul>
+            
+            <li><a href="http://grahamflemingthomson.com/posts/scala_udfs/">Using Scala UDFs in PySpark</a></li>
+            
+            <li><a href="http://grahamflemingthomson.com/posts/list-of-lists/">List of Lists</a></li>
+            
+            <li><a href="http://grahamflemingthomson.com/posts/spark-s3a/">Spark &#43; s3a:// = ❤️</a></li>
+            
+            <li><a href="http://grahamflemingthomson.com/posts/cosine-similarity-spark/">Cosine Similarity Spark</a></li>
+            
+            <li><a href="http://grahamflemingthomson.com/posts/resume/">Resume</a></li>
+            
+        </ul>
+    </div>
+    
+
+    
+    <div id="tags" class="open">
+        <h3 data-open="tags">Tags</h3>
+        <ul class="tags">
+            
+            <li><a href="/tags/apache">apache</a></li>
+            
+            <li><a href="/tags/blog">blog</a></li>
+            
+            <li><a href="/tags/data-science">data-science</a></li>
+            
+            <li><a href="/tags/python">python</a></li>
+            
+            <li><a href="/tags/resume">resume</a></li>
+            
+            <li><a href="/tags/spark">spark</a></li>
+            
+        </ul>
+    </div>
+    
+
+    
+</nav>
+
+</div>
+<div class="col-md-9 content">
+
+<h1>Using Scala UDFs in PySpark</h1>
+<h4>Published 10-14-2019 14:18:21</h4>
+<link href="http://grahamflemingthomson.com/css/share.css" rel="stylesheet" type="text/css">
+
+
+<a class="resp-sharing-button__link" href="mailto:grahamflemingthomson@gmail.com?subject=Hello, Graham" target="_self" rel="noopener" aria-label="">
+  <div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 4H2C.9 4 0 4.9 0 6v12c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM7.25 14.43l-3.5 2c-.08.05-.17.07-.25.07-.17 0-.34-.1-.43-.25-.14-.24-.06-.55.18-.68l3.5-2c.24-.14.55-.06.68.18.14.24.06.55-.18.68zm4.75.07c-.1 0-.2-.03-.27-.08l-8.5-5.5c-.23-.15-.3-.46-.15-.7.15-.22.46-.3.7-.14L12 13.4l8.23-5.32c.23-.15.54-.08.7.15.14.23.07.54-.16.7l-8.5 5.5c-.08.04-.17.07-.27.07zm8.93 1.75c-.1.16-.26.25-.43.25-.08 0-.17-.02-.25-.07l-3.5-2c-.24-.13-.32-.44-.18-.68s.44-.32.68-.18l3.5 2c.24.13.32.44.18.68z"/></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://www.linkedin.com/shareArticle?mini=false&amp;url=http%3a%2f%2fgrahamflemingthomson.com%2fposts%2fscala_udfs%2f&amp;source=http%3a%2f%2fgrahamflemingthomson.com%2fposts%2fscala_udfs%2f" target="_blank" rel="noopener" aria-label="">
+  <div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.5 21.5h-5v-13h5v13zM4 6.5C2.5 6.5 1.5 5.3 1.5 4s1-2.4 2.5-2.4c1.6 0 2.5 1 2.6 2.5 0 1.4-1 2.5-2.6 2.5zm11.5 6c-1 0-2 1-2 2v7h-5v-13h5V10s1.6-1.5 4-1.5c3 0 5 2.2 5 6.3v6.7h-5v-7c0-1-1-2-2-2z"/></svg>
+    </div>
+  </div>
+</a>
+
+<article>
+    
+
+<p>It is often required to write UDFs in Python to extend Sparks native functionality, especially when it comes to Spark&rsquo;s <a href="https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.linalg.Vectors">Vector objects</a> (the required data structure for feeding data to Spark&rsquo;s Machine Learning library).</p>
+
+<p>However, because of the serialization that must take place passing Python objects to the JVM and back, Python UDFs in Spark are inherently slow. To minimize the compute time when using UDFs it often much faster to write the UDF in Scala and call it from Python.</p>
+
+<p>Let&rsquo;s consider a dataframe that contains the following feature vectors and we want to apply a log transformation to.</p>
+
+<pre><code>+-----------------------------------------------------------+
+| count_features                                            |
++-----------------------------------------------------------+
+|[148.03, 12.09, 38.2, 23.16, 58.79, 57.69, 38.1, 244.06]   |
+|[71.86, 103.66, 158.05, 181.19, 32.17, 82.38, 10.06, 61.67]|
++-----------------------------------------------------------+
+</code></pre>
+
+<h3 id="the-python-udf-way">The Python UDF Way</h3>
+
+<p>First, let&rsquo;s take a look at how we might solve this using just Python + PySpark.</p>
+
+<pre><code class="language-python">import numpy as np
+from pyspark.ml.linalg import Vectors, VectorUDT
+import pyspark.sql.functions as F
+
+def np_to_sparse(np_array):
+	&quot;&quot;&quot;
+	Helper function to convert a numpy.ndarray to a pyspark.ml.linalg.SparseVector.
+	:param np_array: Numpy Array.
+	:return: PySpark Sparse Vector.
+	&quot;&quot;&quot;
+	non_zero_indices = np.nonzero(np_array)
+	return Vectors.sparse(np_array.size, non_zero_indices[0], np_array[non_zero_indices])
+    
+@F.udf(returnType=VectorUDT())
+def log_features_python_sparse(feature_vector):
+	&quot;&quot;&quot;
+	PySpark UDF to apply a Log + 1 (to avoid -inf for 0.0 values) transformation to a PySpark vector.
+	:param feature_vector: PySpark Vector (dense/sparse).
+	:return: Log + 1 transformed PySpark Sparse Vector.
+	&quot;&quot;&quot;
+	log_array = np.log(feature_vector.toArray() + 1, dtype=float)
+	return np_to_sparse(log_array)
+	
+df = df.select(log_features_python_sparse(&quot;features&quot;).alias(&quot;log_features&quot;))
+df.show(2)
+
++----------------------------------------------+
+| log_features                                 |
++----------------------------------------------+
+|[5.0, 2.57, 3.67, 3.18, 4.09, 4.07, 3.67, 5.5]|
+|[4.29, 4.65, 5.07, 5.21, 3.5, 4.42, 2.4, 4.14]|
++----------------------------------------------+
+</code></pre>
+
+<h3 id="the-scala-udf-way">The Scala UDF Way</h3>
+
+<p>Now, let&rsquo;s write the Scala code to do the same transformation. We&rsquo;ll need a function that takes a Spark Vector, applies the same log + 1 transformation to each element and returns it as an (sparse) Vector.</p>
+
+<p>We&rsquo;ll also define a function to register our new Scala UDF for use in Spark SQL.</p>
+
+<pre><code>import org.apache.spark.sql.SparkSession
+import org.apache.spark.ml.linalg.{Vector, Vectors}
+import org.apache.spark.sql.functions.udf
+import org.apache.spark.sql.expressions.UserDefinedFunction
+import math.log
+
+object FeatureUDFs {
+
+	def logFeatures(a: Vector): Vector = {
+	    Vectors.dense(a.toArray.map(x =&gt; log(x + 1.0))).toSparse
+	  }
+	  
+  	def logFeaturesUDF: UserDefinedFunction = udf(logFeatures _ )
+	  
+  	def registerUdf: UserDefinedFunction = {
+  		val spark = SparkSession.builder().getOrCreate()
+  		spark.udf.register(&quot;logFeatures&quot;, (a: Vector) =&gt; logFeatures(a))
+  }
+	  
+}
+</code></pre>
+
+<p>With our code written, we need to compile a <code>.jar</code> via our prefered build tool (I&rsquo;ve been using <a href="https://gradle.org/">Gradle</a>). Once built, copy the <code>.jar</code> to your <code>$SPARK_HOME/jars/</code> (e.g. <code>cp build/libs/spark-utils.jar $SPARK_HOME/jars/</code>). Now, let&rsquo;s access our Scala UDF from PySpark.</p>
+
+<h3 id="access-via-sparksql-in-pyspark">Access via SparkSQL in PySpark</h3>
+
+<p>The easiest way to access the Scala UDF from PySpark is via SparkSQL.</p>
+
+<pre><code class="language-python">from pyspark.sql import SparkSession
+spark = SparkSession.builder.getOrCreate()
+
+# calling our registerUdf function from PySpark 
+spark.sparkContext._jvm.FeatureUDFs.registerUdf()
+
+# then access via SparkSQL
+df = spark.sql(&quot;&quot;&quot;
+SELECT
+    logFeatures(features) AS log_features
+FROM
+    df
+&quot;&quot;&quot;)
+df.show(2)
+
++----------------------------------------------+
+| log_features                                 |
++----------------------------------------------+
+|[5.0, 2.57, 3.67, 3.18, 4.09, 4.07, 3.67, 5.5]|
+|[4.29, 4.65, 5.07, 5.21, 3.5, 4.42, 2.4, 4.14]|
++----------------------------------------------+
+</code></pre>
+
+<h3 id="access-via-pyspark-api">Access via PySpark API</h3>
+
+<p>Accessing via the Python is a little bit more work as we need to convert Python Spark objects to Scala ones and vice a versa. Of course in production, we can build a simple, importable, Python API to all of our Scala UDFs as the collection starts to grow.</p>
+
+<pre><code class="language-python">from pyspark.sql import SparkSession
+from pyspark.sql.column import Column, _to_java_column, _to_seq 
+
+spark = SparkSession.builder.getOrCreate()
+
+def log_features_scala_udf(feature_vector): 
+    logFeaturesUDF = spark._jvm.FeatureUDF.logFeaturesUDF() 
+    return Column(logFeaturesUDF.apply(_to_seq(spark.sparkContext, [feature_vector], _to_java_column)))
+
+df = df.select(log_features_scala_udf(&quot;features&quot;).alias(&quot;log_features&quot;))
+df.show(2)
+
++----------------------------------------------+
+| log_features                                 |
++----------------------------------------------+
+|[5.0, 2.57, 3.67, 3.18, 4.09, 4.07, 3.67, 5.5]|
+|[4.29, 4.65, 5.07, 5.21, 3.5, 4.42, 2.4, 4.14]|
++----------------------------------------------+
+</code></pre>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>On a week of one of our event tables that has ≈300 million observations and ≈400 features the Python UDF version took over 2.5x the wall time of the Scala UDF. On less efficient Python UDFs that do not use the relatively speedy numpy package, we&rsquo;ve seen 7-10x improvements in runtime using a Scala UDF!</p>
+
+</article>
+
+
+
+</div>
+</div>
+<script src="http://grahamflemingthomson.com/js/theme.min.js" type="text/javascript"></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-73249319-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+</body>
+</html>
+

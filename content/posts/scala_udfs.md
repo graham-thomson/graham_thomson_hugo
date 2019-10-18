@@ -10,18 +10,22 @@ However, because of the serialization that must take place passing Python object
 
 Let's consider a dataframe that contains the following feature vectors and we want to apply a log transformation to.
 
-|count_features|
-|---|
-|[148.03, 12.09, 38.2, 23.16, 58.79, 57.69, 38.1, 244.06]|
+```
++-----------------------------------------------------------+
+| count_features                                            |
++-----------------------------------------------------------+
+|[148.03, 12.09, 38.2, 23.16, 58.79, 57.69, 38.1, 244.06]   |
 |[71.86, 103.66, 158.05, 181.19, 32.17, 82.38, 10.06, 61.67]|
++-----------------------------------------------------------+
+```
 
-**The Python UDF Way**
+### The Python UDF Way
 
 First, let's take a look at how we might solve this using just Python + PySpark.
 
 ```python
 import numpy as np
-from pyspark.ml.linalg import Vectors
+from pyspark.ml.linalg import Vectors, VectorUDT
 import pyspark.sql.functions as F
 
 def np_to_sparse(np_array):
@@ -45,20 +49,23 @@ def log_features_python_sparse(feature_vector):
 	
 df = df.select(log_features_python_sparse("features").alias("log_features"))
 df.show(2)
-```
 
-|log_features|
-|---|
++----------------------------------------------+
+| log_features                                 |
++----------------------------------------------+
 |[5.0, 2.57, 3.67, 3.18, 4.09, 4.07, 3.67, 5.5]|
 |[4.29, 4.65, 5.07, 5.21, 3.5, 4.42, 2.4, 4.14]|
++----------------------------------------------+
+```
 
-**The Scala UDF Way**
+### The Scala UDF Way
 
 Now, let's write the Scala code to do the same transformation. We'll need a function that takes a Spark Vector, applies the same log + 1 transformation to each element and returns it as an (sparse) Vector.
 
 We'll also define a function to register our new Scala UDF for use in Spark SQL.
 
-```scala
+
+```
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.ml.linalg.{Vector, Vectors}
 import org.apache.spark.sql.functions.udf
@@ -83,7 +90,7 @@ object FeatureUDFs {
 
 With our code written, we need to compile a `.jar` via our prefered build tool (I've been using [Gradle](https://gradle.org/)). Once built, copy the `.jar` to your `$SPARK_HOME/jars/` (e.g. `cp build/libs/spark-utils.jar $SPARK_HOME/jars/`). Now, let's access our Scala UDF from PySpark.
 
-**Access via SparkSQL in PySpark**
+### Access via SparkSQL in PySpark
 
 The easiest way to access the Scala UDF from PySpark is via SparkSQL. 
 
@@ -102,16 +109,18 @@ FROM
     df
 """)
 df.show(2)
-```
 
-|log_features|
-|---|
++----------------------------------------------+
+| log_features                                 |
++----------------------------------------------+
 |[5.0, 2.57, 3.67, 3.18, 4.09, 4.07, 3.67, 5.5]|
 |[4.29, 4.65, 5.07, 5.21, 3.5, 4.42, 2.4, 4.14]|
++----------------------------------------------+
+```
 
-**Access via PySpark API**
+### Access via PySpark API
 
-Accessing via the Python is a little bit more work as we need to convert Python Spark objects to Scala ones and vice a versa.
+Accessing via the Python is a little bit more work as we need to convert Python Spark objects to Scala ones and vice a versa. Of course in production, we can build a simple, importable, Python API to all of our Scala UDFs as the collection starts to grow.
 
 ```python
 from pyspark.sql import SparkSession
@@ -125,9 +134,15 @@ def log_features_scala_udf(feature_vector):
 
 df = df.select(log_features_scala_udf("features").alias("log_features"))
 df.show(2)
-```
 
-|log_features|
-|---|
++----------------------------------------------+
+| log_features                                 |
++----------------------------------------------+
 |[5.0, 2.57, 3.67, 3.18, 4.09, 4.07, 3.67, 5.5]|
 |[4.29, 4.65, 5.07, 5.21, 3.5, 4.42, 2.4, 4.14]|
++----------------------------------------------+
+```
+
+### Conclusion
+
+On a week of one of our event tables that has ≈300 million observations and ≈400 features the Python UDF version took over 2.5x the wall time of the Scala UDF. On less efficient Python UDFs that do not use the relatively speedy numpy package, we've seen 7-10x improvements in runtime using a Scala UDF! 
