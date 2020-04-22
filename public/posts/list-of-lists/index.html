@@ -9,7 +9,7 @@
 <meta name="description" content="">
 
 <title>List of Lists</title>
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.69.0" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/pojoaque.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
@@ -27,6 +27,8 @@
     <div id="last-posts" class="open">
         <h3 data-open="last-posts">Graham Thomson - Most recent posts</h3>
         <ul>
+            
+            <li><a href="http://grahamflemingthomson.com/posts/covid19/">Plotting COVID-19 Cases in the US</a></li>
             
             <li><a href="http://grahamflemingthomson.com/posts/scala_udfs/">Using Scala UDFs in PySpark</a></li>
             
@@ -92,99 +94,73 @@
 <article>
     <p>There are a seemingly infinite number of ways to flatten a list of lists in base Python. By flattening, I mean
 reducing the dimension of a list of lists. In numpy it would be something like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
 
-<pre><code class="language-python">import numpy as np
+np<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">13</span>)<span style="color:#f92672">.</span>reshape(<span style="color:#ae81ff">4</span>,<span style="color:#ae81ff">3</span>)
+<span style="color:#75715e"># array([[ 1,  2,  3],</span>
+<span style="color:#75715e">#       [ 4,  5,  6],</span>
+<span style="color:#75715e">#       [ 7,  8,  9],</span>
+<span style="color:#75715e">#       [10, 11, 12]])</span>
 
-np.arange(1, 13).reshape(4,3)
-# array([[ 1,  2,  3],
-#       [ 4,  5,  6],
-#       [ 7,  8,  9],
-#       [10, 11, 12]])
-
-# becomes
-np.arange(1, 13).reshape(4,3).reshape(-1)
-# array([ 1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12])
-</code></pre>
-
-<p>But what is the fastest and cleanest way in base Python? If you&rsquo;ve ever Googled this topic, you&rsquo;ve likely come across
+<span style="color:#75715e"># becomes</span>
+np<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">13</span>)<span style="color:#f92672">.</span>reshape(<span style="color:#ae81ff">4</span>,<span style="color:#ae81ff">3</span>)<span style="color:#f92672">.</span>reshape(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+<span style="color:#75715e"># array([ 1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12])</span>
+</code></pre></div><p>But what is the fastest and cleanest way in base Python? If you&rsquo;ve ever Googled this topic, you&rsquo;ve likely come across
 <a href="https://stackoverflow.com/questions/952914/how-to-make-a-flat-list-out-of-list-of-lists">this StackOverflow post</a>
 that was asked <em>10 years ago</em> but has answers as new as last year (2018).</p>
-
 <p>So let&rsquo;s start by creating a small list of lists.</p>
-
-<pre><code class="language-python">lol = [list(word) for word in &quot;flatten this list of lists&quot;.split()]
-&quot;&quot;&quot;
-[['f', 'l', 'a', 't', 't', 'e', 'n'],
- ['t', 'h', 'i', 's'],
- ['l', 'i', 's', 't'],
- ['o', 'f'],
- ['l', 'i', 's', 't', 's']]
-&quot;&quot;&quot;
-</code></pre>
-
-<p>Now, the novice way of doing this would be to instantiate a new empty list, then use a nested for loop to iterate
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">lol <span style="color:#f92672">=</span> [list(word) <span style="color:#66d9ef">for</span> word <span style="color:#f92672">in</span> <span style="color:#e6db74">&#34;flatten this list of lists&#34;</span><span style="color:#f92672">.</span>split()]
+<span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">[[&#39;f&#39;, &#39;l&#39;, &#39;a&#39;, &#39;t&#39;, &#39;t&#39;, &#39;e&#39;, &#39;n&#39;],
+</span><span style="color:#e6db74"> [&#39;t&#39;, &#39;h&#39;, &#39;i&#39;, &#39;s&#39;],
+</span><span style="color:#e6db74"> [&#39;l&#39;, &#39;i&#39;, &#39;s&#39;, &#39;t&#39;],
+</span><span style="color:#e6db74"> [&#39;o&#39;, &#39;f&#39;],
+</span><span style="color:#e6db74"> [&#39;l&#39;, &#39;i&#39;, &#39;s&#39;, &#39;t&#39;, &#39;s&#39;]]
+</span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</code></pre></div><p>Now, the novice way of doing this would be to instantiate a new empty list, then use a nested for loop to iterate
 through the list of lists and append each string/character to the empty list.</p>
-
-<pre><code class="language-python">empty_list = []
-for sublist in lol:
-    for char in sublist:
-        empty_list.append(char)
-# 2.61 µs ± 86.4 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
-</code></pre>
-
-<p>Pretty from a readability standpoint but inefficient and pretty slow at 2.61 microseconds per loop.</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">empty_list <span style="color:#f92672">=</span> []
+<span style="color:#66d9ef">for</span> sublist <span style="color:#f92672">in</span> lol:
+    <span style="color:#66d9ef">for</span> char <span style="color:#f92672">in</span> sublist:
+        empty_list<span style="color:#f92672">.</span>append(char)
+<span style="color:#75715e"># 2.61 µs ± 86.4 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)</span>
+</code></pre></div><p>Pretty from a readability standpoint but inefficient and pretty slow at 2.61 microseconds per loop.</p>
 <p>Now we could do the same thing with a comprehension. A bit less readable but still requires no imports and is a bit
 faster at 1.22 microseconds per loop.</p>
-
-<pre><code class="language-python">[char for sublist in lol for char in sublist]
-# 1.22 µs ± 23.5 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
-</code></pre>
-
-<p>For those of you who&rsquo;ve been using Python for some time, may remember in Python2, reduce was a built in function.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">[char <span style="color:#66d9ef">for</span> sublist <span style="color:#f92672">in</span> lol <span style="color:#66d9ef">for</span> char <span style="color:#f92672">in</span> sublist]
+<span style="color:#75715e"># 1.22 µs ± 23.5 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)</span>
+</code></pre></div><p>For those of you who&rsquo;ve been using Python for some time, may remember in Python2, reduce was a built in function.
 You could do things like sum the digits from 1 - 9 by doing: <code>reduce(lambda x, y: x + y, range(10))</code>. This was moved
 to the functools library in <a href="https://www.python.org/dev/peps/pep-3100/">PEP-3100</a>
 because &ldquo;a loop is more readable most of the times&rdquo;. While I agree in most cases, I believe flattening a list of lists
 is one of the exceptions.</p>
-
-<pre><code class="language-python"># dont worry, when I was using timeit, I had the imports in separate cells as to not time the import statement
-from functools import reduce
-from operator import add
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># dont worry, when I was using timeit, I had the imports in separate cells as to not time the import statement</span>
+<span style="color:#f92672">from</span> functools <span style="color:#f92672">import</span> reduce
+<span style="color:#f92672">from</span> operator <span style="color:#f92672">import</span> add
 
 reduce(add, lol)
-# 728 ns ± 17.2 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
-</code></pre>
-
-<p>That&rsquo;s it. All we&rsquo;re doing is using <code>add</code> in place of our own anonymous function (e.g. <code>lambda x, y: x + y</code>) and
+<span style="color:#75715e"># 728 ns ± 17.2 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)</span>
+</code></pre></div><p>That&rsquo;s it. All we&rsquo;re doing is using <code>add</code> in place of our own anonymous function (e.g. <code>lambda x, y: x + y</code>) and
 reducing our list of lists by adding together each of the elements to flatten it. Almost twice as fast as doing this
 via a list comprehension and very readable.</p>
-
 <p>Another way is by using the <a href="https://docs.python.org/3/library/operator.html#operator.iconcat">iconcat</a> operator and an
 empty list. <code>iconcat</code> is functionally equivalent to doing <code>thing += other_thing</code> but does so &lsquo;in place&rsquo;.</p>
-
-<pre><code class="language-python">from operator import iconcat
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> operator <span style="color:#f92672">import</span> iconcat
 
 reduce(iconcat, lol, [])
-# 681 ns ± 35.4 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
-</code></pre>
-
-<p>Slightly faster (at least at this scale of list size).</p>
-
+<span style="color:#75715e"># 681 ns ± 35.4 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)</span>
+</code></pre></div><p>Slightly faster (at least at this scale of list size).</p>
 <p>One last way is to use chain from itertools and unpack the list as arguments to chain. Like much of itertools, this
 returns a generator so we must cast as a list if we want a list returned.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> itertools <span style="color:#f92672">import</span> chain
 
-<pre><code class="language-python">from itertools import chain
-
-list(chain(*lol))
-# 910 ns ± 30.8 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
-</code></pre>
-
-<p>For even more detail including how these solutions scale as the size of the list of list gets bigger,
+list(chain(<span style="color:#f92672">*</span>lol))
+<span style="color:#75715e"># 910 ns ± 30.8 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)</span>
+</code></pre></div><p>For even more detail including how these solutions scale as the size of the list of list gets bigger,
 go back to that StackOverflow post and check out
 <a href="https://stackoverflow.com/users/353337/nico-schl%c3%b6mer">Nico Schlömer&rsquo;s</a> answer (it isn&rsquo;t the selected answer).
 He even provides this pretty time complexity graph:</p>
-
-<p><a href="https://stackoverflow.com/questions/952914/how-to-make-a-flat-list-out-of-list-of-lists"><img src="https://i.stack.imgur.com/ZJrxd.png" alt="image" /></a></p>
+<p><a href="https://stackoverflow.com/questions/952914/how-to-make-a-flat-list-out-of-list-of-lists"><img src="https://i.stack.imgur.com/ZJrxd.png" alt="image"></a></p>
 
 </article>
 

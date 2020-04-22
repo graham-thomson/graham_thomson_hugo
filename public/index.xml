@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Graham Thomson</title>
@@ -6,10 +6,19 @@
     <description>Recent content on Graham Thomson</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 14 Oct 2019 14:18:21 -0400</lastBuildDate>
+    <lastBuildDate>Tue, 21 Apr 2020 12:26:20 -0400</lastBuildDate>
     
 	<atom:link href="http://grahamflemingthomson.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Plotting COVID-19 Cases in the US</title>
+      <link>http://grahamflemingthomson.com/posts/covid19/</link>
+      <pubDate>Tue, 21 Apr 2020 12:26:20 -0400</pubDate>
+      
+      <guid>http://grahamflemingthomson.com/posts/covid19/</guid>
+      <description> Data supplied by NYTimes Github. Beautiful (and easy) plots with Plotly Express. Maps Powered by MapBox (OpenStreetMaps) Full Python Code on Github  Map View  Note this was limited to the 50 states, DC, and PR.   Time Series View  Note both of these plots have a log scale on the y-axis.    </description>
+    </item>
     
     <item>
       <title>Using Scala UDFs in PySpark</title>
@@ -28,7 +37,7 @@ However, because of the serialization that must take place passing Python object
       
       <guid>http://grahamflemingthomson.com/posts/list-of-lists/</guid>
       <description>There are a seemingly infinite number of ways to flatten a list of lists in base Python. By flattening, I mean reducing the dimension of a list of lists. In numpy it would be something like:
-import numpy as np np.arange(1, 13).reshape(4,3) # array([[ 1, 2, 3], # [ 4, 5, 6], # [ 7, 8, 9], # [10, 11, 12]]) # becomes np.arange(1, 13).reshape(4,3).reshape(-1) # array([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])  But what is the fastest and cleanest way in base Python?</description>
+import numpy as np np.arange(1, 13).reshape(4,3) # array([[ 1, 2, 3], # [ 4, 5, 6], # [ 7, 8, 9], # [10, 11, 12]]) # becomes np.arange(1, 13).reshape(4,3).reshape(-1) # array([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]) But what is the fastest and cleanest way in base Python?</description>
     </item>
     
     <item>
@@ -49,7 +58,7 @@ Say we have this script as visits_by_day.</description>
       
       <guid>http://grahamflemingthomson.com/posts/cosine-similarity-spark/</guid>
       <description>Cosine similarity between a static vector and each vector in a Spark data frame Ever want to calculate the cosine similarity between a static vector in Spark and each vector in a Spark data frame? Probably not, as this is an absurdly niche problem to solve but, if you ever have, here&amp;rsquo;s how to do it using spark.sql and a UDF.
-# imports we&#39;ll need import numpy as np from pyspark.</description>
+# imports we&amp;#39;ll need import numpy as np from pyspark.</description>
     </item>
     
     <item>
@@ -58,9 +67,9 @@ Say we have this script as visits_by_day.</description>
       <pubDate>Mon, 17 Jun 2019 21:13:38 -0400</pubDate>
       
       <guid>http://grahamflemingthomson.com/posts/resume/</guid>
-      <description>ABOUT Currently a data scientist at Publicis Spine which serves as a strategic partner in achieving data, analytics, and technology growth solutions to Publicis Groupe agencies and their clients.
-SKILLS Python, SQL, Spark, Keras, Scala, Hadoop/Hive, PHP, APIs, git, HTML5, AWS, GCP, Windows/OSX/Linux TCP/IP, HTTP/S, SSL, SSH, FTP, Microsoft Excel/Office
-EXPERIENCE Publicis Groupe, Boston — Lead Data Scientist February 2019 - PRESENT
+      <description>ABOUT  Currently a data scientist at Publicis Spine which serves as a strategic partner in achieving data, analytics, and technology growth solutions to Publicis Groupe agencies and their clients.
+SKILLS  Python, SQL, Spark, Keras, Scala, Hadoop/Hive, PHP, APIs, git, HTML5, AWS, GCP, Windows/OSX/Linux TCP/IP, HTTP/S, SSL, SSH, FTP, Microsoft Excel/Office
+EXPERIENCE  Publicis Groupe, Boston — Lead Data Scientist February 2019 - PRESENT
  Machine learning and data science development for Publicis Spine.</description>
     </item>
     

@@ -9,7 +9,7 @@
 <meta name="description" content="">
 
 <title>Graham Thomson</title>
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.69.0" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/pojoaque.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
@@ -27,6 +27,8 @@
     <div id="last-posts" class="open">
         <h3 data-open="last-posts">Graham Thomson - Most recent posts</h3>
         <ul>
+            
+            <li><a href="http://grahamflemingthomson.com/posts/covid19/">Plotting COVID-19 Cases in the US</a></li>
             
             <li><a href="http://grahamflemingthomson.com/posts/scala_udfs/">Using Scala UDFs in PySpark</a></li>
             
@@ -73,39 +75,12 @@
 <div class="articles-list">
     
     <article>
-        <h3><a href="http://grahamflemingthomson.com/posts/resume/">Resume</a> - 2019-06-17 21:13:38</h3>
-        ABOUT Currently a data scientist at Publicis Spine which serves as a strategic partner in achieving data, analytics, and technology growth solutions to Publicis Groupe agencies and their clients.
-SKILLS Python, SQL, Spark, Keras, Scala, Hadoop/Hive, PHP, APIs, git, HTML5, AWS, GCP, Windows/OSX/Linux TCP/IP, HTTP/S, SSL, SSH, FTP, Microsoft Excel/Office
-EXPERIENCE Publicis Groupe, Boston — Lead Data Scientist February 2019 - PRESENT
- Machine learning and data science development for Publicis Spine.
-    </article>
-    
-    <article>
-        <h3><a href="http://grahamflemingthomson.com/posts/cosine-similarity-spark/">Cosine Similarity Spark</a> - 2019-06-18 08:57:30</h3>
-        Cosine similarity between a static vector and each vector in a Spark data frame Ever want to calculate the cosine similarity between a static vector in Spark and each vector in a Spark data frame? Probably not, as this is an absurdly niche problem to solve but, if you ever have, here&rsquo;s how to do it using spark.sql and a UDF.
-# imports we'll need import numpy as np from pyspark.
-    </article>
-    
-    <article>
-        <h3><a href="http://grahamflemingthomson.com/posts/spark-s3a/">Spark &#43; s3a:// = ❤️</a> - 2019-06-18 09:31:24</h3>
-        Typically our data science AWS workflows follow this sequence:
- Turn on EC2. Copy data from S3 via awscli to local machine file system. Code references local data via /path/to/data/. ??? Profit.  However, if the data you need to reference is relatively small or you&rsquo;re only passing over the data once, you can use s3a:// and stream the data direct from S3 into your code.
-Say we have this script as visits_by_day.
-    </article>
-    
-    <article>
-        <h3><a href="http://grahamflemingthomson.com/posts/list-of-lists/">List of Lists</a> - 2019-06-18 21:17:24</h3>
-        There are a seemingly infinite number of ways to flatten a list of lists in base Python. By flattening, I mean reducing the dimension of a list of lists. In numpy it would be something like:
-import numpy as np np.arange(1, 13).reshape(4,3) # array([[ 1, 2, 3], # [ 4, 5, 6], # [ 7, 8, 9], # [10, 11, 12]]) # becomes np.arange(1, 13).reshape(4,3).reshape(-1) # array([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])  But what is the fastest and cleanest way in base Python?
-    </article>
-    
-    <article>
-        <h3><a href="http://grahamflemingthomson.com/posts/scala_udfs/">Using Scala UDFs in PySpark</a> - 2019-10-14 14:18:21</h3>
-        It is often required to write UDFs in Python to extend Sparks native functionality, especially when it comes to Spark&rsquo;s Vector objects (the required data structure for feeding data to Spark&rsquo;s Machine Learning library).
-However, because of the serialization that must take place passing Python objects to the JVM and back, Python UDFs in Spark are inherently slow. To minimize the compute time when using UDFs it often much faster to write the UDF in Scala and call it from Python.
+        <h3><a href="http://grahamflemingthomson.com/posts/">Posts</a> - 2020-04-21 12:26:20</h3>
+        
     </article>
     
 </div>
+
 
 
 </div>

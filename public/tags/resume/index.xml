@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>resume on Graham Thomson</title>
@@ -17,9 +17,9 @@
       <pubDate>Mon, 17 Jun 2019 21:13:38 -0400</pubDate>
       
       <guid>http://grahamflemingthomson.com/posts/resume/</guid>
-      <description>ABOUT Currently a data scientist at Publicis Spine which serves as a strategic partner in achieving data, analytics, and technology growth solutions to Publicis Groupe agencies and their clients.
-SKILLS Python, SQL, Spark, Keras, Scala, Hadoop/Hive, PHP, APIs, git, HTML5, AWS, GCP, Windows/OSX/Linux TCP/IP, HTTP/S, SSL, SSH, FTP, Microsoft Excel/Office
-EXPERIENCE Publicis Groupe, Boston — Lead Data Scientist February 2019 - PRESENT
+      <description>ABOUT  Currently a data scientist at Publicis Spine which serves as a strategic partner in achieving data, analytics, and technology growth solutions to Publicis Groupe agencies and their clients.
+SKILLS  Python, SQL, Spark, Keras, Scala, Hadoop/Hive, PHP, APIs, git, HTML5, AWS, GCP, Windows/OSX/Linux TCP/IP, HTTP/S, SSL, SSH, FTP, Microsoft Excel/Office
+EXPERIENCE  Publicis Groupe, Boston — Lead Data Scientist February 2019 - PRESENT
  Machine learning and data science development for Publicis Spine.</description>
     </item>
     

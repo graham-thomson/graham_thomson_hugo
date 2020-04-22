@@ -9,7 +9,7 @@
 <meta name="description" content="">
 
 <title>Spark &#43; s3a:// = ❤️</title>
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.69.0" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/pojoaque.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
@@ -27,6 +27,8 @@
     <div id="last-posts" class="open">
         <h3 data-open="last-posts">Graham Thomson - Most recent posts</h3>
         <ul>
+            
+            <li><a href="http://grahamflemingthomson.com/posts/covid19/">Plotting COVID-19 Cases in the US</a></li>
             
             <li><a href="http://grahamflemingthomson.com/posts/scala_udfs/">Using Scala UDFs in PySpark</a></li>
             
@@ -91,7 +93,6 @@
 
 <article>
     <p>Typically our data science AWS workflows follow this sequence:</p>
-
 <ol>
 <li>Turn on EC2.</li>
 <li>Copy data from S3 via <code>awscli</code> to local machine file system.</li>
@@ -99,39 +100,30 @@
 <li>???</li>
 <li>Profit.</li>
 </ol>
-
 <p>However, if the data you need to reference is relatively small or you&rsquo;re only passing over the data once, you can use <a href="https://wiki.apache.org/hadoop/AmazonS3">s3a://</a> and stream the data direct from S3 into your code.</p>
-
 <p>Say we have this script as <code>visits_by_day.py</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># generally a good idea to alias spark functions to preserve python built in&#39;s namespace (e.g. sum)</span>
+<span style="color:#f92672">import</span> pyspark.sql.functions <span style="color:#f92672">as</span> F
+<span style="color:#f92672">from</span> pyspark.sql <span style="color:#f92672">import</span> SparkSession
 
-<pre><code class="language-python"># generally a good idea to alias spark functions to preserve python built in's namespace (e.g. sum)
-import pyspark.sql.functions as F
-from pyspark.sql import SparkSession
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+    spark <span style="color:#f92672">=</span> SparkSession<span style="color:#f92672">.</span>builder<span style="color:#f92672">.</span>getOrCreate()
+    df <span style="color:#f92672">=</span> spark<span style="color:#f92672">.</span>read<span style="color:#f92672">.</span>parquet(<span style="color:#e6db74">&#34;s3a://some-s3-bucket/clients/client-x/data/omniture/dt=2017-04-*&#34;</span>)
+    df<span style="color:#f92672">.</span>groupBy(<span style="color:#e6db74">&#34;visit_day&#34;</span>)<span style="color:#f92672">.</span>agg(F<span style="color:#f92672">.</span>count(<span style="color:#e6db74">&#34;*&#34;</span>)<span style="color:#f92672">.</span>alias(<span style="color:#e6db74">&#34;no_obs&#34;</span>))<span style="color:#f92672">.</span>orderBy(<span style="color:#e6db74">&#34;visit_day&#34;</span>)<span style="color:#f92672">.</span>show()
+</code></pre></div><p>Or in Scala <code>VisitsByDay.scala</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">org</span>.<span style="color:#a6e22e">apache</span>.<span style="color:#a6e22e">spark</span>.<span style="color:#a6e22e">sql</span>.<span style="color:#a6e22e">SparkSession</span>
 
-if __name__ == '__main__':
-    spark = SparkSession.builder.getOrCreate()
-    df = spark.read.parquet(&quot;s3a://some-s3-bucket/clients/client-x/data/omniture/dt=2017-04-*&quot;)
-    df.groupBy(&quot;visit_day&quot;).agg(F.count(&quot;*&quot;).alias(&quot;no_obs&quot;)).orderBy(&quot;visit_day&quot;).show()
-</code></pre>
-
-<p>Or in Scala <code>VisitsByDay.scala</code>:</p>
-
-<pre><code class="language-javascript">import org.apache.spark.sql.SparkSession
-
-/**
-  * Created by grathoms on 6/14/17.
-  */
-object VisitsByDay {
-  def main(args: Array[String]): Unit = {
-    val spark = SparkSession.builder().getOrCreate()
-    val df = spark.read.parquet(&quot;s3a://some-s3-bucket/clients/client-x/data/omniture/dt=2017-04-1*&quot;)
-    df.groupBy(&quot;visit_day&quot;).count().orderBy(&quot;visit_day&quot;).show()
+<span style="color:#75715e">/**
+</span><span style="color:#75715e">  * Created by grathoms on 6/14/17.
+</span><span style="color:#75715e">  */</span>
+<span style="color:#a6e22e">object</span> <span style="color:#a6e22e">VisitsByDay</span> {
+  <span style="color:#a6e22e">def</span> <span style="color:#a6e22e">main</span>(<span style="color:#a6e22e">args</span><span style="color:#f92672">:</span> Array[String])<span style="color:#f92672">:</span> <span style="color:#a6e22e">Unit</span> <span style="color:#f92672">=</span> {
+    <span style="color:#a6e22e">val</span> <span style="color:#a6e22e">spark</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">SparkSession</span>.<span style="color:#a6e22e">builder</span>().<span style="color:#a6e22e">getOrCreate</span>()
+    <span style="color:#a6e22e">val</span> <span style="color:#a6e22e">df</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">spark</span>.<span style="color:#a6e22e">read</span>.<span style="color:#a6e22e">parquet</span>(<span style="color:#e6db74">&#34;s3a://some-s3-bucket/clients/client-x/data/omniture/dt=2017-04-1*&#34;</span>)
+    <span style="color:#a6e22e">df</span>.<span style="color:#a6e22e">groupBy</span>(<span style="color:#e6db74">&#34;visit_day&#34;</span>).<span style="color:#a6e22e">count</span>().<span style="color:#a6e22e">orderBy</span>(<span style="color:#e6db74">&#34;visit_day&#34;</span>).<span style="color:#a6e22e">show</span>()
   }
 }
-</code></pre>
-
-<p>Output:</p>
-
+</code></pre></div><p>Output:</p>
 <pre><code>+---------+------+
 |visit_day| count|
 +---------+------+
@@ -146,15 +138,11 @@ object VisitsByDay {
 | 20170418|142700|
 | 20170419|343261|
 +---------+------+
-</code></pre>
-
-<p>If you&rsquo;ve installed Spark from scratch you&rsquo;ll need additional JARs to use s3a that are not inlcuded with Spark at the time of authoring this post.</p>
-
-<pre><code class="language-bash"># the jars you'll need to do this...
+</code></pre><p>If you&rsquo;ve installed Spark from scratch you&rsquo;ll need additional JARs to use s3a that are not inlcuded with Spark at the time of authoring this post.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># the jars you&#39;ll need to do this...</span>
 wget https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/2.7.3/hadoop-aws-2.7.3.jar -O $SPARK_HOME/jars/hadoop-aws-2.7.3.jar
 wget http://central.maven.org/maven2/com/amazonaws/aws-java-sdk/1.7.4/aws-java-sdk-1.7.4.jar -O $SPARK_HOME/jars/aws-java-sdk-1.7.4.jar
-</code></pre>
-
+</code></pre></div>
 </article>
 
 

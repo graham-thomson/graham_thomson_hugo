@@ -9,7 +9,7 @@
 <meta name="description" content="">
 
 <title>Cosine Similarity Spark</title>
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.69.0" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/pojoaque.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
@@ -27,6 +27,8 @@
     <div id="last-posts" class="open">
         <h3 data-open="last-posts">Graham Thomson - Most recent posts</h3>
         <ul>
+            
+            <li><a href="http://grahamflemingthomson.com/posts/covid19/">Plotting COVID-19 Cases in the US</a></li>
             
             <li><a href="http://grahamflemingthomson.com/posts/scala_udfs/">Using Scala UDFs in PySpark</a></li>
             
@@ -90,62 +92,52 @@
 </a>
 
 <article>
-    
-
-<h2 id="cosine-similarity-between-a-static-vector-and-each-vector-in-a-spark-data-frame">Cosine similarity between a static vector and each vector in a Spark data frame</h2>
-
+    <h2 id="cosine-similarity-between-a-static-vector-and-each-vector-in-a-spark-data-frame">Cosine similarity between a static vector and each vector in a Spark data frame</h2>
 <p>Ever want to calculate the cosine similarity between a static vector in Spark and each vector in a Spark data frame? Probably not, as this is an absurdly niche problem to solve but, if you ever have, here&rsquo;s how to do it using <code>spark.sql</code> and a UDF.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># imports we&#39;ll need</span>
+<span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
+<span style="color:#f92672">from</span> pyspark.ml.linalg <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+<span style="color:#f92672">from</span> pyspark.sql.types <span style="color:#f92672">import</span> <span style="color:#f92672">*</span> 
+<span style="color:#f92672">from</span> pyspark.sql.functions <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
 
-<pre><code class="language-python"># imports we'll need
-import numpy as np
-from pyspark.ml.linalg import *
-from pyspark.sql.types import * 
-from pyspark.sql.functions import *
+<span style="color:#75715e"># function to generate a random Spark dense vector, spark doesnt like np floats ;)</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">random_dense_vector</span>(length<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>):
+    <span style="color:#66d9ef">return</span> Vectors<span style="color:#f92672">.</span>dense([float(np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>random()) <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> xrange(length)])
 
-# function to generate a random Spark dense vector, spark doesnt like np floats ;)
-def random_dense_vector(length=10):
-    return Vectors.dense([float(np.random.random()) for i in xrange(length)])
+<span style="color:#75715e"># create a random static dense vector</span>
+static_vector <span style="color:#f92672">=</span> random_dense_vector()
 
-# create a random static dense vector
-static_vector = random_dense_vector()
+<span style="color:#75715e"># create a random DF with dense vectors in column</span>
+df <span style="color:#f92672">=</span> spark<span style="color:#f92672">.</span>createDataFrame([[random_dense_vector()] <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> xrange(<span style="color:#ae81ff">10</span>)], [<span style="color:#e6db74">&#34;myCol&#34;</span>])
+df<span style="color:#f92672">.</span>limit(<span style="color:#ae81ff">3</span>)<span style="color:#f92672">.</span>toPandas()
 
-# create a random DF with dense vectors in column
-df = spark.createDataFrame([[random_dense_vector()] for x in xrange(10)], [&quot;myCol&quot;])
-df.limit(3).toPandas()
+<span style="color:#75715e"># write our UDF for cosine similarity</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">cos_sim</span>(a,b):
+    <span style="color:#66d9ef">return</span> float(np<span style="color:#f92672">.</span>dot(a, b) <span style="color:#f92672">/</span> (np<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>norm(a) <span style="color:#f92672">*</span> np<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>norm(b)))
 
-# write our UDF for cosine similarity
-def cos_sim(a,b):
-    return float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
-
-# apply the UDF to the column
-df = df.withColumn(&quot;coSim&quot;, udf(cos_sim, FloatType())(col(&quot;myCol&quot;), array([lit(v) for v in static_array])))
-df.limit(10).toPandas()
-</code></pre>
-
-<p>So, what did we do:</p>
-
+<span style="color:#75715e"># apply the UDF to the column</span>
+df <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>withColumn(<span style="color:#e6db74">&#34;coSim&#34;</span>, udf(cos_sim, FloatType())(col(<span style="color:#e6db74">&#34;myCol&#34;</span>), array([lit(v) <span style="color:#66d9ef">for</span> v <span style="color:#f92672">in</span> static_array])))
+df<span style="color:#f92672">.</span>limit(<span style="color:#ae81ff">10</span>)<span style="color:#f92672">.</span>toPandas()
+</code></pre></div><p>So, what did we do:</p>
 <ul>
 <li>Imported necessary libraries.</li>
 <li>Instantiated a random static vector and a DataFrame that holds a bunch of random vectors.</li>
 <li>Wrote a UDF to calculate cosine similarity.</li>
 <li>Mapped the UDF over the DF to create a new column containing the cosine similarity between the static vector and the vector in that row.</li>
 </ul>
-
 <p>This is trivial to do using RDDs and a .map() but in spark.sql you need to:</p>
-
 <ul>
 <li>Register the cosine similarity function as a UDF and specify the return type.
-
 <ul>
 <li><code>udf(cos_sim, FloatType())</code></li>
-</ul></li>
+</ul>
+</li>
 <li>Pass the UDF the two arguments it needs: a column to map over AND the static vector we defined. However, we need to tell Spark that the static vector is an array of literal floats first using:
-
 <ul>
 <li><code>(col(&quot;myCol&quot;), array([lit(v) for v in static_array]))</code></li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <p><code>sys.exit(&quot;All done!&quot;)</code></p>
 
 </article>
