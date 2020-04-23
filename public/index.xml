@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Graham F Thomson</title>
+    <title>Graham Thomson</title>
     <link>http://grahamflemingthomson.com/</link>
-    <description>Recent content on Graham F Thomson</description>
+    <description>Recent content on Graham Thomson</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 22 Apr 2020 20:07:54 -0400</lastBuildDate>
@@ -13,39 +13,39 @@
     
     <item>
       <title>Plotting COVID-19 Cases in the US</title>
-      <link>http://grahamflemingthomson.com/posts/covid19/</link>
+      <link>http://grahamflemingthomson.com/covid19/</link>
       <pubDate>Wed, 22 Apr 2020 20:07:54 -0400</pubDate>
       
-      <guid>http://grahamflemingthomson.com/posts/covid19/</guid>
+      <guid>http://grahamflemingthomson.com/covid19/</guid>
       <description> Data supplied by NYTimes Github. Beautiful (and easy) plots with Plotly Express. Maps Powered by MapBox (OpenStreetMaps) Full Python Code on Github  Map View  Note this was limited to the 50 states, DC, and PR.   Time Series View  Note both of these plots have a log scale on the y-axis.    </description>
     </item>
     
     <item>
       <title>Using Scala UDFs in PySpark</title>
-      <link>http://grahamflemingthomson.com/posts/scala_udfs/</link>
+      <link>http://grahamflemingthomson.com/scala_udfs/</link>
       <pubDate>Mon, 14 Oct 2019 14:18:21 -0400</pubDate>
       
-      <guid>http://grahamflemingthomson.com/posts/scala_udfs/</guid>
+      <guid>http://grahamflemingthomson.com/scala_udfs/</guid>
       <description>It is often required to write UDFs in Python to extend Sparks native functionality, especially when it comes to Spark&amp;rsquo;s Vector objects (the required data structure for feeding data to Spark&amp;rsquo;s Machine Learning library).
 However, because of the serialization that must take place passing Python objects to the JVM and back, Python UDFs in Spark are inherently slow. To minimize the compute time when using UDFs it often much faster to write the UDF in Scala and call it from Python.</description>
     </item>
     
     <item>
       <title>List of Lists</title>
-      <link>http://grahamflemingthomson.com/posts/list-of-lists/</link>
+      <link>http://grahamflemingthomson.com/list-of-lists/</link>
       <pubDate>Tue, 18 Jun 2019 21:17:24 -0400</pubDate>
       
-      <guid>http://grahamflemingthomson.com/posts/list-of-lists/</guid>
+      <guid>http://grahamflemingthomson.com/list-of-lists/</guid>
       <description>There are a seemingly infinite number of ways to flatten a list of lists in base Python. By flattening, I mean reducing the dimension of a list of lists. In numpy it would be something like:
 import numpy as np np.arange(1, 13).reshape(4,3) # array([[ 1, 2, 3], # [ 4, 5, 6], # [ 7, 8, 9], # [10, 11, 12]]) # becomes np.arange(1, 13).reshape(4,3).reshape(-1) # array([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]) But what is the fastest and cleanest way in base Python?</description>
     </item>
     
     <item>
       <title>Spark &#43; s3a:// = ❤️</title>
-      <link>http://grahamflemingthomson.com/posts/spark-s3a/</link>
+      <link>http://grahamflemingthomson.com/spark-s3a/</link>
       <pubDate>Tue, 18 Jun 2019 09:31:24 -0400</pubDate>
       
-      <guid>http://grahamflemingthomson.com/posts/spark-s3a/</guid>
+      <guid>http://grahamflemingthomson.com/spark-s3a/</guid>
       <description>Typically our data science AWS workflows follow this sequence:
  Turn on EC2. Copy data from S3 via awscli to local machine file system. Code references local data via /path/to/data/. ??? Profit.  However, if the data you need to reference is relatively small or you&amp;rsquo;re only passing over the data once, you can use s3a:// and stream the data direct from S3 into your code.
 Say we have this script as visits_by_day.</description>
@@ -53,20 +53,20 @@ Say we have this script as visits_by_day.</description>
     
     <item>
       <title>Cosine Similarity Spark</title>
-      <link>http://grahamflemingthomson.com/posts/cosine-similarity-spark/</link>
+      <link>http://grahamflemingthomson.com/cosine-similarity-spark/</link>
       <pubDate>Tue, 18 Jun 2019 08:57:30 -0400</pubDate>
       
-      <guid>http://grahamflemingthomson.com/posts/cosine-similarity-spark/</guid>
+      <guid>http://grahamflemingthomson.com/cosine-similarity-spark/</guid>
       <description>Cosine similarity between a static vector and each vector in a Spark data frame Ever want to calculate the cosine similarity between a static vector in Spark and each vector in a Spark data frame? Probably not, as this is an absurdly niche problem to solve but, if you ever have, here&amp;rsquo;s how to do it using spark.sql and a UDF.
 # imports we&amp;#39;ll need import numpy as np from pyspark.</description>
     </item>
     
     <item>
       <title>Resume</title>
-      <link>http://grahamflemingthomson.com/posts/resume/</link>
+      <link>http://grahamflemingthomson.com/resume/</link>
       <pubDate>Mon, 17 Jun 2019 21:13:38 -0400</pubDate>
       
-      <guid>http://grahamflemingthomson.com/posts/resume/</guid>
+      <guid>http://grahamflemingthomson.com/resume/</guid>
       <description>ABOUT  Currently a data scientist at Publicis Spine which serves as a strategic partner in achieving data, analytics, and technology growth solutions to Publicis Groupe agencies and their clients.
 SKILLS  Python, SQL, Spark, Keras, Scala, Hadoop/Hive, PHP, APIs, git, HTML5, AWS, GCP, Windows/OSX/Linux TCP/IP, HTTP/S, SSL, SSH, FTP, Microsoft Excel/Office
 EXPERIENCE  Publicis Groupe, Boston — Lead Data Scientist February 2019 - PRESENT

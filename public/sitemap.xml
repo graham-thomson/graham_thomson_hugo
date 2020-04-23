@@ -8,22 +8,17 @@
   </url>
   
   <url>
-    <loc>http://grahamflemingthomson.com/posts/covid19/</loc>
+    <loc>http://grahamflemingthomson.com/covid19/</loc>
     <lastmod>2020-04-22T20:07:54-04:00</lastmod>
   </url>
   
   <url>
-    <loc>http://grahamflemingthomson.com/posts/</loc>
-    <lastmod>2020-04-22T20:07:54-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://grahamflemingthomson.com/posts/scala_udfs/</loc>
+    <loc>http://grahamflemingthomson.com/scala_udfs/</loc>
     <lastmod>2019-10-14T14:18:21-04:00</lastmod>
   </url>
   
   <url>
-    <loc>http://grahamflemingthomson.com/posts/list-of-lists/</loc>
+    <loc>http://grahamflemingthomson.com/list-of-lists/</loc>
     <lastmod>2019-06-18T21:17:24-04:00</lastmod>
   </url>
   
@@ -53,7 +48,7 @@
   </url>
   
   <url>
-    <loc>http://grahamflemingthomson.com/posts/spark-s3a/</loc>
+    <loc>http://grahamflemingthomson.com/spark-s3a/</loc>
     <lastmod>2019-06-18T09:31:24-04:00</lastmod>
   </url>
   
@@ -63,12 +58,12 @@
   </url>
   
   <url>
-    <loc>http://grahamflemingthomson.com/posts/cosine-similarity-spark/</loc>
+    <loc>http://grahamflemingthomson.com/cosine-similarity-spark/</loc>
     <lastmod>2019-06-18T08:57:30-04:00</lastmod>
   </url>
   
   <url>
-    <loc>http://grahamflemingthomson.com/posts/resume/</loc>
+    <loc>http://grahamflemingthomson.com/resume/</loc>
     <lastmod>2019-06-17T21:13:38-04:00</lastmod>
   </url>
   

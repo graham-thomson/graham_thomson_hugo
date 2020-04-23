@@ -25,20 +25,20 @@
     
     <h3 class="home-link"><a href="http://grahamflemingthomson.com">Root</a></h3>
     <div id="last-posts" class="open">
-        <h3 data-open="last-posts">Graham F Thomson - Most recent posts</h3>
+        <h3 data-open="last-posts">Graham Thomson - Most recent posts</h3>
         <ul>
             
-            <li><a href="http://grahamflemingthomson.com/posts/covid19/">Plotting COVID-19 Cases in the US</a></li>
+            <li><a href="http://grahamflemingthomson.com/covid19/">Plotting COVID-19 Cases in the US</a></li>
             
-            <li><a href="http://grahamflemingthomson.com/posts/scala_udfs/">Using Scala UDFs in PySpark</a></li>
+            <li><a href="http://grahamflemingthomson.com/scala_udfs/">Using Scala UDFs in PySpark</a></li>
             
-            <li><a href="http://grahamflemingthomson.com/posts/list-of-lists/">List of Lists</a></li>
+            <li><a href="http://grahamflemingthomson.com/list-of-lists/">List of Lists</a></li>
             
-            <li><a href="http://grahamflemingthomson.com/posts/spark-s3a/">Spark &#43; s3a:// = ❤️</a></li>
+            <li><a href="http://grahamflemingthomson.com/spark-s3a/">Spark &#43; s3a:// = ❤️</a></li>
             
-            <li><a href="http://grahamflemingthomson.com/posts/cosine-similarity-spark/">Cosine Similarity Spark</a></li>
+            <li><a href="http://grahamflemingthomson.com/cosine-similarity-spark/">Cosine Similarity Spark</a></li>
             
-            <li><a href="http://grahamflemingthomson.com/posts/resume/">Resume</a></li>
+            <li><a href="http://grahamflemingthomson.com/resume/">Resume</a></li>
             
         </ul>
     </div>
@@ -75,13 +75,13 @@
 <div class="articles-list">
     
     <article>
-        <h3><a href="http://grahamflemingthomson.com/posts/cosine-similarity-spark/">Cosine Similarity Spark</a> - 2019-06-18 08:57:30</h3>
+        <h3><a href="http://grahamflemingthomson.com/cosine-similarity-spark/">Cosine Similarity Spark</a> - 2019-06-18 08:57:30</h3>
         Cosine similarity between a static vector and each vector in a Spark data frame Ever want to calculate the cosine similarity between a static vector in Spark and each vector in a Spark data frame? Probably not, as this is an absurdly niche problem to solve but, if you ever have, here&rsquo;s how to do it using spark.sql and a UDF.
 # imports we&#39;ll need import numpy as np from pyspark.
     </article>
     
     <article>
-        <h3><a href="http://grahamflemingthomson.com/posts/spark-s3a/">Spark &#43; s3a:// = ❤️</a> - 2019-06-18 09:31:24</h3>
+        <h3><a href="http://grahamflemingthomson.com/spark-s3a/">Spark &#43; s3a:// = ❤️</a> - 2019-06-18 09:31:24</h3>
         Typically our data science AWS workflows follow this sequence:
  Turn on EC2. Copy data from S3 via awscli to local machine file system. Code references local data via /path/to/data/. ??? Profit.  However, if the data you need to reference is relatively small or you&rsquo;re only passing over the data once, you can use s3a:// and stream the data direct from S3 into your code.
 Say we have this script as visits_by_day.
