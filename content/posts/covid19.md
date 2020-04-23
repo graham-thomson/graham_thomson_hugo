@@ -1,6 +1,6 @@
 ---
 title: "Plotting COVID-19 Cases in the US"
-date: 2020-04-21T12:26:20-04:00
+date: 2020-04-22T20:07:54-04:00
 draft: false
 ---
 

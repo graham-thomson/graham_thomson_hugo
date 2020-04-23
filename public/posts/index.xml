@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Graham Thomson</title>
+    <title>Posts on Graham F Thomson</title>
     <link>http://grahamflemingthomson.com/posts/</link>
-    <description>Recent content in Posts on Graham Thomson</description>
+    <description>Recent content in Posts on Graham F Thomson</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 21 Apr 2020 12:26:20 -0400</lastBuildDate>
+    <lastBuildDate>Wed, 22 Apr 2020 20:07:54 -0400</lastBuildDate>
     
 	<atom:link href="http://grahamflemingthomson.com/posts/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>Plotting COVID-19 Cases in the US</title>
       <link>http://grahamflemingthomson.com/posts/covid19/</link>
-      <pubDate>Tue, 21 Apr 2020 12:26:20 -0400</pubDate>
+      <pubDate>Wed, 22 Apr 2020 20:07:54 -0400</pubDate>
       
       <guid>http://grahamflemingthomson.com/posts/covid19/</guid>
       <description> Data supplied by NYTimes Github. Beautiful (and easy) plots with Plotly Express. Maps Powered by MapBox (OpenStreetMaps) Full Python Code on Github  Map View  Note this was limited to the 50 states, DC, and PR.   Time Series View  Note both of these plots have a log scale on the y-axis.    </description>
