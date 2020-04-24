@@ -17,6 +17,14 @@ draft: false
 <iframe src="../plots/counties_map.html" height="500" width=90% style="border:none;"></iframe>
 {{< /rawhtml >}}
 
+* Thought it might be interesting to run K-Means on all the cases in the US. Wow does NY have a lot of cases. New England 
+and Boston don't get their own cluster until k=12.
+* Ran `k=range(2, 22, 2)`
+
+{{< rawhtml >}}
+<iframe src="../plots/covid_kmeans.html" height="500" width=90% style="border:none;"></iframe>
+{{< /rawhtml >}}
+
 ## Time Series View
 
 * Note both of these plots have a log scale on the y-axis.
