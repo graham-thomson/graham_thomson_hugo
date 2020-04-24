@@ -96,7 +96,7 @@
 <li>Data supplied by <a href="https://github.com/nytimes/covid-19-data">NYTimes Github</a>.</li>
 <li>Beautiful (and easy) plots with <a href="https://plotly.com/python/plotly-express/#plotly-express">Plotly Express</a>.</li>
 <li>Maps Powered by <a href="https://www.mapbox.com/">MapBox (OpenStreetMaps)</a></li>
-<li>Full Python Code on <a href="https://gist.github.com/graham-thomson/08791e9faf705d6bbdf0188b9c0a9c3b">Github</a></li>
+<li>Full Python Code on <a href="https://github.com/graham-thomson/graham_thomson_hugo/blob/master/content/notebooks/covid_notebook_mapping.ipynb">Github</a></li>
 </ul>
 <h2 id="map-view">Map View</h2>
 <ul>
@@ -107,10 +107,21 @@
 <iframe src="../plots/counties_map.html" height="500" width=90% style="border:none;"></iframe>
 
 
+<h2 id="k-means-clustering-on-covid-19-cases">K-Means Clustering on COVID-19 Cases</h2>
 <ul>
-<li>Thought it might be interesting to run K-Means on all the cases in the US. Wow does NY have a lot of cases. New England
-and Boston don&rsquo;t get their own cluster until k=12.</li>
+<li>Thought it might be interesting to run K-Means on all the cases in the US.
+To do so, I exploded the county dataset from its aggregated form to each row representing a single case of COVID-19.
+It could be interesting to normalize the data for population.</li>
 <li>Ran <code>k=range(2, 22, 2)</code></li>
+<li>Some interesting findings:
+<ul>
+<li><strong>k=2</strong> - East vs West. Even though the 26 states east of the Mississippi River make up <a href="https://en.wikipedia.org/wiki/Eastern_United_States">~58% of the total US population</a>
+we see ~85% of US cases represented by the cluster with its centroid near Carroll County, Maryland.</li>
+<li><strong>k=4</strong> - The northeast (~61%), the south (~14%), the midwest (~16%), and the west (~9%).</li>
+<li><strong>k=12</strong> - New Orleans emerges as a separate cluster from Texas. The <a href="https://en.wikipedia.org/wiki/Washington_metropolitan_area#Nomenclature">DMV</a>, Baltimore, and Philly gets its own cluster.</li>
+<li><strong>k=16</strong> - New England and Boston finally get their own cluster.</li>
+</ul>
+</li>
 </ul>
 
 

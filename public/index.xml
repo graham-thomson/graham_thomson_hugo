@@ -17,7 +17,7 @@
       <pubDate>Wed, 22 Apr 2020 20:07:54 -0400</pubDate>
       
       <guid>http://grahamflemingthomson.com/covid19/</guid>
-      <description>Data supplied by NYTimes Github. Beautiful (and easy) plots with Plotly Express. Maps Powered by MapBox (OpenStreetMaps) Full Python Code on Github  Map View  Note this was limited to the 50 states, DC, and PR.    Thought it might be interesting to run K-Means on all the cases in the US. Wow does NY have a lot of cases. New England and Boston don&amp;rsquo;t get their own cluster until k=12.</description>
+      <description>Data supplied by NYTimes Github. Beautiful (and easy) plots with Plotly Express. Maps Powered by MapBox (OpenStreetMaps) Full Python Code on Github  Map View  Note this was limited to the 50 states, DC, and PR.   K-Means Clustering on COVID-19 Cases  Thought it might be interesting to run K-Means on all the cases in the US. To do so, I exploded the county dataset from its aggregated form to each row representing a single case of COVID-19.</description>
     </item>
     
     <item>
